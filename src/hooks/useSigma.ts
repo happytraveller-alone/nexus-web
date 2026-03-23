@@ -206,6 +206,9 @@ export const useSigma = (options: UseSigmaOptions = {}): UseSigmaReturn => {
       labelRenderedSizeThreshold: 8,
       labelDensity: 0.1,
       labelGridCellSize: 70,
+      renderEdgeLabels: false,
+      enableEdgeEvents: false,
+      edgeProgramClasses: {},
       
       defaultNodeColor: '#6b7280',
       defaultEdgeColor: '#2a2a3a',
@@ -383,6 +386,8 @@ export const useSigma = (options: UseSigmaOptions = {}): UseSigmaReturn => {
       },
       
       edgeReducer: (edge, data) => {
+        // 隐藏所有边
+        return { hidden: true };
         const res = { ...data };
         
         // Check edge type visibility first

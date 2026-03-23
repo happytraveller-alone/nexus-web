@@ -68,7 +68,7 @@ export const DropZone = ({ onFileSelect }: DropZoneProps) => {
         )}
 
         {/* ZIP Upload */}
-        <div
+        {/* <div
           className={`
             relative p-16
             bg-surface border-2 border-dashed rounded-3xl
@@ -91,7 +91,6 @@ export const DropZone = ({ onFileSelect }: DropZoneProps) => {
             onChange={handleFileInput}
           />
 
-          {/* Icon */}
           <div className={`
             mx-auto w-20 h-20 mb-6
             flex items-center justify-center
@@ -107,7 +106,6 @@ export const DropZone = ({ onFileSelect }: DropZoneProps) => {
             )}
           </div>
 
-          {/* Text */}
           <h2 className="text-xl font-semibold text-text-primary text-center mb-2">
             {isDragging ? 'Drop it here!' : 'Drop your codebase'}
           </h2>
@@ -115,13 +113,12 @@ export const DropZone = ({ onFileSelect }: DropZoneProps) => {
             Drag & drop a .zip file to generate a knowledge graph
           </p>
 
-          {/* Hints */}
           <div className="flex items-center justify-center gap-3 text-xs text-text-muted">
             <span className="px-3 py-1.5 bg-elevated border border-border-subtle rounded-md">
               .zip
             </span>
           </div>
-        </div>
+        </div> */}
       </div>
     </div>
   );
