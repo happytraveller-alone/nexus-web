@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { AppStateProvider, useAppState } from './hooks/useAppState';
 import { DropZone } from './components/DropZone';
 import { LoadingOverlay } from './components/LoadingOverlay';
@@ -28,6 +28,18 @@ const AppContent = () => {
   } = useAppState();
 
   const graphCanvasRef = useRef<GraphCanvasHandle>(null);
+  
+  // 新增：从父页面同步主题
+  const [background, setBackground] = useState<'dark' | 'light'>('dark');
+
+  useEffect(() => {
+    const handler = (event: MessageEvent) => {
+      if (event.data?.type !== 'THEME_CHANGE') return;
+      setBackground(event.data.theme === 'light' ? 'light' : 'dark');
+    };
+    window.addEventListener('message', handler);
+    return () => window.removeEventListener('message', handler);
+  }, []);
 
   // 启动时检测到缓存则直接加载，跳过上传和 pipeline
   useEffect(() => {
@@ -96,7 +108,7 @@ const AppContent = () => {
     <div className="flex flex-col h-screen bg-void overflow-hidden">
       <main className="flex-1 flex min-h-0">
         <div className="flex-1 relative min-w-0">
-          <GraphCanvas ref={graphCanvasRef} />
+          <GraphCanvas ref={graphCanvasRef} background={background} />
         </div>
       </main>
     </div>
