@@ -387,75 +387,7 @@ export const useSigma = (options: UseSigmaOptions = {}): UseSigmaReturn => {
       edgeReducer: (edge, data) => {
         // 隐藏所有边
         return { hidden: true };
-        const res = { ...data };
         
-        // Check edge type visibility first
-        const visibleTypes = visibleEdgeTypesRef.current;
-        if (visibleTypes && data.relationType) {
-          if (!visibleTypes.includes(data.relationType as EdgeType)) {
-            res.hidden = true;
-            return res;
-          }
-        }
-        
-        const currentSelected = selectedNodeRef.current;
-        const highlighted = highlightedRef.current;
-        const blastRadius = blastRadiusRef.current;
-        const hasHighlights = highlighted.size > 0 || blastRadius.size > 0; // Check BOTH sets
-        
-        if (hasHighlights && !currentSelected) {
-          const graph = graphRef.current;
-          if (graph) {
-            const [source, target] = graph.extremities(edge);
-            
-            // Check if nodes are in EITHER set
-            const isSourceActive = highlighted.has(source) || blastRadius.has(source);
-            const isTargetActive = highlighted.has(target) || blastRadius.has(target);
-            
-            const bothHighlighted = isSourceActive && isTargetActive;
-            const oneHighlighted = isSourceActive || isTargetActive;
-            
-            if (bothHighlighted) {
-              // If both nodes are in blast radius, use red edge
-              if (blastRadius.has(source) && blastRadius.has(target)) {
-                res.color = '#ef4444';
-              } else {
-                res.color = '#06b6d4';
-              }
-              res.size = Math.max(2, (data.size || 1) * 3);
-              res.zIndex = 2;
-            } else if (oneHighlighted) {
-              res.color = dimColor('#06b6d4', 0.4);
-              res.size = 1;
-              res.zIndex = 1;
-            } else {
-              res.color = dimColor(data.color, 0.08);
-              res.size = 0.2;
-              res.zIndex = 0;
-            }
-          }
-          return res;
-        }
-        
-        if (currentSelected) {
-          const graph = graphRef.current;
-          if (graph) {
-            const [source, target] = graph.extremities(edge);
-            const isConnected = source === currentSelected || target === currentSelected;
-            
-            if (isConnected) {
-              res.color = brightenColor(data.color, 1.5);
-              res.size = Math.max(3, (data.size || 1) * 4);
-              res.zIndex = 2;
-            } else {
-              res.color = dimColor(data.color, 0.1);
-              res.size = 0.3;
-              res.zIndex = 0;
-            }
-          }
-        }
-        
-        return res;
       },
     });
 
