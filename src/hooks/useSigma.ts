@@ -208,7 +208,6 @@ export const useSigma = (options: UseSigmaOptions = {}): UseSigmaReturn => {
       labelGridCellSize: 70,
       renderEdgeLabels: false,
       enableEdgeEvents: false,
-      edgeProgramClasses: {},
       
       defaultNodeColor: '#6b7280',
       defaultEdgeColor: '#2a2a3a',

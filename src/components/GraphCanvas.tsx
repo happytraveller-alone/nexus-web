@@ -9,8 +9,12 @@ import Graph from 'graphology';
 export interface GraphCanvasHandle {
   focusNode: (nodeId: string) => void;
 }
+interface GraphCanvasProps {
+  background?: 'dark' | 'light';
+}
 
-export const GraphCanvas = forwardRef<GraphCanvasHandle>((_, ref) => {
+export const GraphCanvas = forwardRef<GraphCanvasHandle, GraphCanvasProps>(
+  ({ background = 'dark' }, ref) => {
   const {
     graph,
     setSelectedNode,
@@ -29,6 +33,7 @@ export const GraphCanvas = forwardRef<GraphCanvasHandle>((_, ref) => {
     animatedNodes,
   } = useAppState();
   const [hoveredNodeName, setHoveredNodeName] = useState<string | null>(null);
+  const isLight = background === 'light';
 
   const effectiveHighlightedNodeIds = useMemo(() => {
     if (!isAIHighlightsEnabled) return highlightedNodeIds;
@@ -172,16 +177,21 @@ export const GraphCanvas = forwardRef<GraphCanvasHandle>((_, ref) => {
   }, [setSelectedNode, setSigmaSelectedNode, resetZoom]);
 
   return (
-    <div className="relative w-full h-full bg-void">
+    <div className={`relative w-full h-full ${isLight ? 'bg-white' : 'bg-void'}`}>
       {/* Background gradient */}
       <div className="absolute inset-0 pointer-events-none">
         <div
           className="absolute inset-0"
           style={{
-            background: `
-              radial-gradient(circle at 50% 50%, rgba(124, 58, 237, 0.03) 0%, transparent 70%),
-              linear-gradient(to bottom, #06060a, #0a0a10)
-            `
+            background: isLight
+              ? `
+                radial-gradient(circle at 50% 50%, rgba(124, 58, 237, 0.06) 0%, transparent 70%),
+                linear-gradient(to bottom, #ffffff, #f5f5f5)
+              `
+              : `
+                radial-gradient(circle at 50% 50%, rgba(124, 58, 237, 0.03) 0%, transparent 70%),
+                linear-gradient(to bottom, #06060a, #0a0a10)
+              `
           }}
         />
       </div>
